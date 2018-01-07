@@ -13,7 +13,7 @@ If you haven’t already, also write a recursive version of nth.
 
 arrayToList = (arr) ->
   value = arr.shift()
-  rest = if arr.length > 0 then arrayToList arr else null
+  rest = if arr.length > 0 then arrayToList(arr) else null
 
   { value, rest }
 

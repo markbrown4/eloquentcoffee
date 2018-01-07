@@ -7,13 +7,13 @@ equal when compared with a recursive call to deepEqual.
 ###
 
 isObject = (value) ->
-  value != null and typeof value == 'object'
+  value != null && typeof value == 'object'
 
 deepEqual = (a, b)->
-  unless isObject(a) and isObject(b)
+  unless isObject(a) && isObject(b)
     return a == b
 
-  if Object.keys(a).length != Object.keys(b).length
+  unless Object.keys(a).length == Object.keys(b).length
     return false
 
   for key, value of a
