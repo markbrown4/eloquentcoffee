@@ -35,7 +35,11 @@ console.log range(5, 2, -1)
 console.log sum(range(1, 10))
 # 55
 
-# Note: ranges are built into coffeescript so the function could simply be:
+###
+
+Note: ranges are built into coffeescript so the function could simply be:
+
+###
 
 range = (start, end) -> [start..end]
 sum = (arr) ->

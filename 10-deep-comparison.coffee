@@ -9,7 +9,7 @@ equal when compared with a recursive call to deepEqual.
 isObject = (value) ->
   value != null && typeof value == 'object'
 
-deepEqual = (a, b)->
+deepEqual = (a, b) ->
   unless isObject(a) && isObject(b)
     return a == b
 

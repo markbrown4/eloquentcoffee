@@ -13,7 +13,7 @@ List.empty (a static property).
 
 ###
 
-EMPTY = Symbol('EMPTY')
+EMPTY = Symbol 'EMPTY'
 
 class List
   constructor: (@value = EMPTY, rest) ->
@@ -27,15 +27,6 @@ class List
 
     result
 
-  @fromArray: (arr)->
-    value = arr.shift()
-    rest = if arr.length > 0
-      List.fromArray(arr)
-    else
-      List.empty
-
-    new List(value, rest)
-
   length: ->
     return 0 if @value == EMPTY
     return 1 if @rest == List.empty
@@ -48,6 +39,15 @@ class List
 
     count @rest
 
+  @fromArray: (arr) ->
+    value = arr.shift()
+    rest = if arr.length > 0
+      List.fromArray(arr)
+    else
+      List.empty
+
+    new List(value, rest)
+
 List.empty = new List()
 
 # improve console.log output
@@ -56,12 +56,8 @@ List::inspect = ->
   if @value == EMPTY
     null
   else
-    @
+    this
 
-module.exports = { List, EMPTY }
-
-# prevent logging when imported in 17-list-iterator
-return unless process.argv[1].includes('16-list-class')
 
 console.log List.fromArray([10, 20])
 # List { value: 10, rest: List { value: 20, rest: null } }
@@ -76,9 +72,27 @@ console.log new List('2', new List(3)).length()
 
 ###
 
+Make the List class iterable.
+
+###
+
+List::[Symbol.iterator] = ->
+  list = this
+  while list.value != EMPTY
+    yield list.value
+    list = list.rest
+
+for value from List.fromArray(['a', 'b', 'c'])
+  console.log value
+
+# a
+# b
+# c
+
+
+###
+
 Note: As explained in 15-vector.coffee, I've chosen to avoid getters for length
 and make it a standard method on the prototype that has to be called. e.g.
-
-myList.length()
 
 ###

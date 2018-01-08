@@ -8,7 +8,7 @@ of arrays into a single array that has all the elements of the input arrays.
 flatten = (arr) ->
   arr.reduce (acc, value) ->
     if value.constructor.name == 'Array'
-      acc.concat(flatten(value))
+      acc.concat flatten(value)
     else
       [...acc, value]
   , []

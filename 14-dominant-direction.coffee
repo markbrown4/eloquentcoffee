@@ -2,7 +2,7 @@
   SCRIPTS
   countBy
   characterScript
-} = require('./lib')
+} = require('./lib/language')
 
 ###
 
