@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <style media="screen">
+  .selected {
+    background: green;
+  }
+  </style>
+</head>
+<body>
+
+<tab-panel>
+  <div data-tabname="one">Tab one</div>
+  <div data-tabname="two">Tab two</div>
+  <div data-tabname="three">Tab three</div>
+</tab-panel>
+
+<script src="http://coffeescript.org/v2/browser-compiler/coffeescript.js"></script>
+<script type="text/coffeescript">
+
+asTabs = (node) ->
+  tabs = node.querySelectorAll '[data-tabname]'
+  buttons = []
+
+  selectTab = (index) ->
+    for i in [0..tabs.length - 1]
+      selected = index == i
+      tabs[i].style.display = if selected then 'block' else 'none'
+      buttons[i].classList.toggle 'selected', selected
+
+  for tab, index in tabs
+    button = document.createElement 'button'
+    button.innerHTML = tab.dataset.tabname
+    button.addEventListener 'click', (event) ->
+      event.preventDefault()
+      index = buttons.indexOf(event.target)
+      selectTab index
+
+    node.parentNode.insertBefore button, node
+    buttons.push button
+
+  selectTab 0
+
+asTabs document.querySelector('tab-panel')
+
+</script>
+</body>
+</html>
