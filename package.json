@@ -1,0 +1,26 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "Marijn Haverbeke's [Eloquent JS](https://eloquentjavascript.net/) is an excellent book, here's my solutions to the exercises written in CoffeeScript.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markbrown4/eloquentcoffee.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/markbrown4/eloquentcoffee/issues"
+  },
+  "homepage": "https://github.com/markbrown4/eloquentcoffee#readme",
+  "dependencies": {
+    "htmltidy": "0.0.6",
+    "jsdom": "^11.6.2"
+  }
+}
