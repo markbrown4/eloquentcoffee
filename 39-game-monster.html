@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Game</title>
+<link rel="stylesheet" href="./lib/game.css" />
+</head>
+<body>
+<script src="./lib/game.js"></script>
+<script src="http://coffeescript.org/v2/browser-compiler/coffeescript.js"></script>
+<script type="text/coffeescript">
+###
+
+We’ll call it a monster. Monsters move only horizontally. You can make them move
+in the direction of the player, or bounce back and forth like horizontal lava,
+or have any movement pattern you want. The class doesn’t have to handle falling,
+but it should make sure the monster doesn’t walk into walls.
+
+When a monster touches the player, the effect depends on whether the player is
+jumping on top of them or not. You can approximate this by checking whether the
+player’s bottom is near the monster’s top. If this is the case, the monster
+disappears. If not, the game is lost.
+
+###
+
+class Monster
+  constructor: (@pos, @speed) ->
+
+  @create: (pos)->
+    new Monster pos.plus(new Vec(0, -1)), new Vec(-5, 0)
+
+  update: (time, state) ->
+    newPos = this.pos.plus(this.speed.times(time))
+    newSpeed = if state.level.touches(newPos, this.size, 'wall')
+      this.speed.times(-1)
+    else
+      this.speed
+
+    new Monster newPos, newSpeed
+
+  collide: (state) ->
+    status = state.status
+    filtered = state.actors
+
+    if state.player.pos.y > this.pos.y
+      status = 'lost'
+    else
+      filtered = state.actors.filter (a) => a != this
+
+    new State(state.level, filtered, status)
+
+Object.defineProperty Monster.prototype, 'type',
+  get: -> 'monster'
+
+Monster::size = new Vec(1.2, 2)
+
+levelChars["M"] = Monster
+
+runLevel new Level("""
+..................................
+.################################.
+.#..............................#.
+.#..............................#.
+.#..............................#.
+.#...........................o..#.
+.#..@...........................#.
+.##########..............########.
+..........#..o..o..o..o..#........
+..........#...........M..#........
+..........################........
+..................................
+"""), DOMDisplay
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Game</title>
+<link rel="stylesheet" href="./lib/game.css" />
+</head>
+<body>
+<script src="./lib/game.js"></script>
+<script src="http://coffeescript.org/v2/browser-compiler/coffeescript.js"></script>
+<script type="text/coffeescript">
+###
+
+Make it possible to pause (suspend) and unpause the game by pressing the Esc key.
+
+###
+
+window.runLevel = (level, Display) ->
+  display = new Display document.body, level
+  state = State.start level
+  ending = 1
+
+  window.addEventListener 'keydown', (e) ->
+    if e.key == 'Escape'
+      state.status = if state.status == 'playing' then 'paused' else 'playing'
+
+  new Promise (resolve) ->
+    runAnimation (time) ->
+      return true if state.status == 'paused'
+
+      state = state.update time, arrowKeys
+      display.drawState state
+
+      if state.status == 'playing'
+        true
+      else if ending > 0
+        ending -= time
+        true
+      else
+        display.clear()
+        resolve state.status
+        false
+
+
+runGame GAME_LEVELS, DOMDisplay
+</script>
+</body>
+</html>

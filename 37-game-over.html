@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Game</title>
+<link rel="stylesheet" href="./lib/game.css" />
+</head>
+<body>
+<script src="./lib/game.js"></script>
+<script src="http://coffeescript.org/v2/browser-compiler/coffeescript.js"></script>
+<script type="text/coffeescript">
+###
+
+Adjust runGame to implement lives. Have the player start with three. Output the
+current amount of lives (using console.log) every time a level starts.
+
+###
+
+runGame = (plans, Display) ->
+  level = 0
+  lives = 3
+  while level < plans.length && lives > 0
+    console.log "You have #{lives} #{if lives == 1 then 'life' else 'lives'}"
+    status = await runLevel new Level(plans[level]), Display
+
+    level++ if status == "won"
+    lives-- if status == "lost"
+    if lives == 0
+      level = 0
+      lives = 3
+      console.log "You're dead."
+
+  console.log "You've won!"
+
+runGame GAME_LEVELS, DOMDisplay
+</script>
+</body>
+</html>
