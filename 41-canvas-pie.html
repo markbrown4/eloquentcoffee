@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Canvas</title>
+<link rel="stylesheet" href="./lib/game.css" />
+</head>
+<canvas width="600" height="300"></canvas>
+<body>
+<script src="./lib/coffeescript.js"></script>
+<script type="text/coffeescript">
+###
+
+Modify this program so that the name of each category is shown next to the slice
+that represents it. Try to find a pleasing-looking way to automatically position
+this text, which would work for other data sets as well.
+
+###
+
+results = [
+  { name: "Satisfied", count: 1043, color: "rgb(69,99,203)" },
+  { name: "Neutral", count: 563, color: "rgb(192,58,0)" },
+  { name: "Unsatisfied", count: 510, color: "rgb(232,151,0)" },
+  { name: "No comment", count: 175, color: "rgb(77,137,33)" }
+]
+
+canvas = document.querySelector 'canvas'
+ctx = canvas.getContext '2d'
+total = results.reduce (sum, {count}) ->
+  sum + count
+, 0
+angle = -0.5 * Math.PI
+cx = 300
+cy = 150
+r = 100
+
+# Add code to draw the slice labels in this loop.
+for result in results
+  sliceAngle = (result.count / total) * 2 * Math.PI
+  ctx.beginPath()
+  ctx.arc cx, cy, r, angle, angle + sliceAngle
+  angle += sliceAngle
+  ctx.lineTo cx, cy
+  ctx.fillStyle = result.color
+  ctx.fill()
+
+  labelAngle = angle - sliceAngle / 2
+  offset = 25
+  x = cx + (r + offset) * Math.cos(labelAngle)
+  y = cy + (r + offset) * Math.sin(labelAngle)
+  ctx.fillText(result.name, x, y)
+  ctx.textAlign = 'center'
+
+</script>
+</body>
+</html>

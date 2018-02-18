@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Canvas</title>
+<link rel="stylesheet" href="./lib/game.css" />
+</head>
+<img src="img/shapes.png" />
+<br>
+<canvas width="1000" height="500" style="width: 500px; height: 250px;"></canvas>
+<body>
+<script src="./lib/coffeescript.js"></script>
+<script type="text/coffeescript">
+###
+
+Write a program that draws the following shapes on a canvas:
+
+###
+
+canvas = document.querySelector 'canvas'
+ctx = canvas.getContext('2d')
+ctx.lineWidth = 2
+
+# A trapezoid (a rectangle that is wider on one side)
+ctx.moveTo 40, 100
+ctx.lineTo 80, 30
+ctx.lineTo 160, 30
+ctx.lineTo 200, 100
+ctx.closePath()
+ctx.stroke()
+
+# A red diamond (a rectangle rotated 45 degrees or ¼π radians)
+ctx.save()
+ctx.translate(290, 150)
+ctx.rotate(1/4 * Math.PI)
+ctx.fillStyle = '#ff0000'
+ctx.fillRect(-100, -100, 90, 90)
+ctx.restore()
+
+# A zigzagging line
+ctx.beginPath()
+ctx.moveTo 400, y
+for y in [20..140] by 20
+  ctx.lineTo 550, y + 10
+  ctx.lineTo 400, y + 20
+
+ctx.stroke()
+
+# A spiral made up of 100 straight line segments
+cx = 670
+cy = 100
+ctx.moveTo cx, cy
+for i in [1..100]
+  angle = 0.2 * i
+  x = cx + (4 * angle * Math.cos(angle))
+  y = cy + (4 * angle * Math.sin(angle))
+
+  ctx.lineTo x, y
+ctx.stroke()
+
+# A yellow star
+cx = 890
+cy = 100
+radius = 90
+
+ctx.fillStyle = 'rgb(235, 164, 0)'
+ctx.beginPath()
+ctx.moveTo cx + radius, cy
+for i in [1..8]
+  angle = i * Math.PI / 4
+  x = cx + Math.cos(angle) * radius
+  y = cy + Math.sin(angle) * radius
+  ctx.quadraticCurveTo(cx, cy, x, y)
+ctx.fill()
+
+</script>
+</body>
+</html>

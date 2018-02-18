@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Canvas</title>
+<link rel="stylesheet" href="./lib/game.css" />
+</head>
+<canvas width="400" height="400"></canvas>
+<body>
+<script src="./lib/coffeescript.js"></script>
+<script type="text/coffeescript">
+###
+
+Think of a way to allow us to draw an inverted character without loading
+additional image files and without having to make transformed drawImage calls
+every frame.
+
+###
+
+canvas = document.querySelector 'canvas'
+ctx = canvas.getContext '2d'
+width = canvas.width
+height = canvas.height
+
+flipHorizontally = (ctx, around) ->
+  ctx.translate around, 0
+  ctx.scale -1, 1
+  ctx.translate -around, 0
+
+mirror = document.createElement 'canvas'
+playerSprites = document.createElement 'img'
+playerSprites.src = 'img/player.png'
+
+playerSprites.onload = () ->
+  width = playerSprites.width
+  height = playerSprites.height
+
+  mirror.width = width
+  mirror.height = height
+  ctx2 = mirror.getContext '2d'
+  flipHorizontally(ctx2, width/2)
+  ctx2.drawImage(playerSprites, 0, 0)
+
+  requestAnimationFrame run
+
+tileW = 24
+tileH = 30
+tileX = 0
+
+run = () ->
+  tileX += tileW
+  tileX = 0 if tileX == tileW * 8
+  ctx.clearRect(0, 0, tileW * 2, tileH)
+  ctx.drawImage(playerSprites, tileX, 0, tileW, tileH, 0, 0, tileW, tileH)
+  ctx.drawImage(mirror, tileX, 0, tileW, tileH, tileW, 0, tileW, tileH)
+  requestAnimationFrame run
+</script>
+</body>
+</html>
