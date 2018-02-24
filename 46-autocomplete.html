@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Canvas</title>
+<link rel="stylesheet" href="./lib/game.css" />
+</head>
+<input type="text" id="field">
+<div id="suggestions" style="cursor: pointer"></div>
+<body>
+<script src="./lib/coffeescript.js"></script>
+<script type="text/coffeescript">
+###
+
+Extend a text field so that when the user types, a list of suggested values is
+shown below the field. You have an array of possible values available and should
+show those that start with the text that was typed. When a suggestion is clicked,
+replace the text field’s current value with it.
+
+###
+
+terms = Object.keys window
+field = document.querySelector '#field'
+suggestions = document.querySelector '#suggestions'
+
+field.oninput = () ->
+  html = terms.filter (term) ->
+    term.startsWith field.value
+  .map (term) ->
+    "<div>#{term}</div>"
+  .join ''
+
+  suggestions.innerHTML = html
+
+suggestions.onclick = (event) ->
+  field.value = event.target.textContent
+  suggestions.innerHTML = ''
+
+</script>
+</body>
+</html>
